@@ -9,12 +9,11 @@
             margin: 0;
             padding: 0;
             background: #000 url('https://www.transparenttextures.com/patterns/stardust.png');
-            color: #feda4a; /* Amarillo Star Wars */
+            color: #feda4a;
             font-family: 'Century Gothic', Arial, sans-serif;
-            overflow: hidden; /* Oculta las barras de desplazamiento */
+            overflow: hidden;
         }
         
-        /* Pantalla de inicio para desbloquear el audio y pantalla completa */
         #pantalla-inicio {
             position: absolute;
             width: 100%;
@@ -43,12 +42,11 @@
             color: #feda4a;
         }
 
-        /* Novedad: Pantalla del texto inicial azul */
         #pantalla-intro-azul {
             position: absolute;
             width: 100%;
             height: 100%;
-            display: none; /* Se activa al pulsar el botón */
+            display: none;
             justify-content: center;
             align-items: center;
             background-color: black;
@@ -56,12 +54,11 @@
         }
 
         #texto-intro-azul {
-            color: #4bd5ee; /* Azul clásico de Star Wars */
+            color: #4bd5ee;
             font-size: clamp(1.2rem, 4vw, 2.5rem);
             text-align: center;
             padding: 20px;
             opacity: 0;
-            /* Aparece, se mantiene y desaparece a lo largo de 5 segundos */
             animation: aparecerDesaparecer 5s ease-in-out forwards;
         }
 
@@ -72,48 +69,42 @@
             100% { opacity: 0; }
         }
 
-        /* Contenedor de la animación 3D de las letras amarillas */
         #galaxia {
+            position: relative;
             width: 100%;
             height: 100vh;
-            perspective: 400px;
+            perspective: 350px; 
             display: none;
             overflow: hidden;
+            transition: opacity 1s ease-out; 
         }
 
         #texto-crawl {
-            position: relative;
-            width: 90%;
-            max-width: 800px;
-            margin: 0 auto;
+            position: absolute;
+            top: 110vh; 
+            left: 2%;
+            width: 96%;
+            margin: 0;
             text-align: justify;
-            font-size: clamp(1.2rem, 5vw, 2.2rem); 
+            font-size: clamp(2.5rem, 8vw, 6rem); 
             line-height: 1.5em;
             letter-spacing: 2px;
-            transform-origin: 50% 100%;
-            top: 150vh; 
-            animation: crawl 70s linear forwards; 
+            transform-origin: 50% 0%;
+            animation: crawl 140s linear forwards; 
         }
 
         .titulo {
             text-align: center;
-            font-size: 1.5em;
+            font-size: 1.8em; 
             margin-bottom: 50px;
             font-weight: bold;
         }
 
         @keyframes crawl {
-            0% {
-                top: 150vh;
-                transform: rotateX(25deg) translateZ(0);
-            }
-            100% {
-                top: -3500px;
-                transform: rotateX(25deg) translateZ(-2000px);
-            }
+            0% { transform: rotateX(35deg) translateY(50px); }
+            100% { transform: rotateX(35deg) translateY(-12000px); }
         }
 
-        /* Animación del Halcón Milenario */
         #contenedor-halcon {
             position: fixed;
             left: 0;
@@ -128,29 +119,41 @@
 
         #halcon {
             position: absolute;
-            bottom: -500px;
-            left: 50%;
-            transform: translateX(-50%) scale(0.5);
+            top: 50%;
+            left: -50vw;
             width: 80%;
-            max-width: 400px;
+            max-width: 500px;
+            transform: translateY(-50%) rotate(105deg) scale(0.5); 
+        }
+
+        #halcon img {
+            width: 100%;
+            display: block;
+            position: relative;
+            z-index: 2;
+            filter: brightness(0.65) contrast(1.3);
         }
 
         .animar-halcon {
-            animation: vuelo 3.5s cubic-bezier(0.42, 0, 0.13, 1.12) forwards; 
+            animation: vueloDerecha 7s ease-in forwards, turbulencia 0.15s infinite alternate ease-in-out; 
         }
 
-        @keyframes vuelo {
+        @keyframes vueloDerecha {
             0% {
-                bottom: -500px;
-                transform: translateX(-50%) scale(0.6);
+                left: -50vw;
+                transform: translateY(-50%) rotate(105deg) scale(0.6);
             }
             100% {
-                bottom: 120%;
-                transform: translateX(-50%) scale(1.5);
+                left: 120vw;
+                transform: translateY(-50%) rotate(105deg) scale(1.8);
             }
         }
 
-        /* Pantalla final estática */
+        @keyframes turbulencia {
+            0% { margin-top: -3px; margin-left: -2px; }
+            100% { margin-top: 3px; margin-left: 2px; }
+        }
+
         #pantalla-final {
             display: none;
             position: fixed;
@@ -210,100 +213,104 @@
 </head>
 <body>
 
-    <!-- Pantalla Inicial -->
     <div id="pantalla-inicio">
         <button id="btn-iniciar" onclick="iniciarMision()">Comenzar Transmisión</button>
     </div>
 
-    <!-- Pantalla del texto azul silencioso -->
     <div id="pantalla-intro-azul">
         <p id="texto-intro-azul">Hace mucho tiempo, en una galaxia muy, muy lejana...</p>
     </div>
 
-    <!-- Las Letras de Star Wars Amarillas -->
     <div id="galaxia">
         <div id="texto-crawl">
             <div class="titulo">EPISODIO I<br>UNA NUEVA ALIANZA</div>
             
-            <p>Leire y Unai han decidido unir sus fuerzas para siempre. Tras años de aventuras compartidas, la Fuerza ha despertado y es el momento de celebrarlo por todo lo alto.</p>
+            <p>La galaxia se encuentra en un periodo de gran expectación. Desde los confines más remotos hasta el núcleo del sistema estelar de Navarra, se ha emitido un comunicado urgente que cambiará el destino de la República.</p>
             
-            <p>El Alto Mando de la Rebelión requiere la presencia de sus aliados más leales. Habrá provisiones, brindis y bailes hasta que caiga el Imperio.</p>
+            <p>Leire y Unai, tras innumerables aventuras compartidas, misiones encubiertas y tras esquivar las trampas del Lado Oscuro, han decidido unir sus fuerzas de manera definitiva. La Fuerza ha despertado con un poder inigualable y es el momento de sellar esta alianza por todo lo alto.</p>
             
-            <p>Prepara tu nave, ajusta las coordenadas y mantente a la espera de las instrucciones finales...</p>
+            <p>El Alto Mando de la Rebelión ha convocado a sus aliados más leales, valientes y fiesteros para asistir a una cumbre sin precedentes. Los espías Bothan han confirmado que habrá abundantes provisiones, elixires de los rincones más exóticos de la galaxia y música en la cantina hasta que caiga el Imperio.</p>
+            
+            <p>Saca brillo a tu armadura, prepara tu nave para dar el salto al hiperespacio, ajusta las coordenadas de navegación y mantente a la espera de las instrucciones finales.</p>
+            
+            <p style="text-align: center; margin-top: 40px; font-weight: bold;">Que la Fuerza te acompañe...</p>
         </div>
     </div>
 
-    <!-- El Halcón Milenario -->
     <div id="contenedor-halcon">
-        <img id="halcon" src="https://www.pngmart.com/files/3/Millennium-Falcon-PNG-Transparent-Image.png" alt="Halcón Milenario">
+        <div id="halcon">
+            <img src="halcon.png" alt="Halcón Milenario">
+        </div>
     </div>
 
-    <!-- Pantalla Final (Fecha, Lugar y Links) -->
     <div id="pantalla-final">
         <h1 class="titulo-final">Boda Leire & Unai</h1>
         <div class="datos-boda">
             <p><strong>Fecha:</strong> 13/11/2027</p>
-            <p><strong>Lugar:</strong> Hotel Luze El Toro</p>
+            <p><strong>Planeta:</strong> Hotel Luze El Toro</p>
         </div>
         <div class="enlaces-finales">
-            <a href="TU_LINK_DE_GOOGLE_FORMS_AQUI" target="_blank" class="enlace-btn">Confirmar Asistencia</a>
-            <a href="TU_LINK_DE_SPOTIFY_AQUI" target="_blank" class="enlace-btn">Añadir Canciones</a>
+            <a href="https://docs.google.com/forms/d/e/1FAIpQLSf6UzpPIvAITrcz62n_hB0R6xRO8MhsfqRMi2g7bqR9PQDkmA/viewform?usp=dialog" target="_blank" class="enlace-btn">CONFIRMA TU ASISTENCIA A LA BASE REBELDE</a>
+            <a href="https://open.spotify.com/playlist/66KC7a42JyNr3aVRS0LqWP?si=Sbh7RGZFRhCdRhy8crLuAA&utm_source=whatsapp&pi=Fs7kTy0qTwaKG" target="_blank" class="enlace-btn">AÑADE TUS TEMAS A LA CANTINA DE MOS EISLEY</a>
         </div>
     </div>
 
-    <!-- Música -->
+    <!-- Archivos de audio -->
     <audio id="musica-fondo" src="star_wars_theme.mp3"></audio>
+    <audio id="sonido-nave" src="nave.mp3"></audio>
 
-    <!-- La Magia en JavaScript -->
     <script>
         function iniciarMision() {
-            // 1. Poner en pantalla completa
             let elem = document.documentElement;
             if (elem.requestFullscreen) {
                 elem.requestFullscreen();
-            } else if (elem.webkitRequestFullscreen) { /* Safari */
+            } else if (elem.webkitRequestFullscreen) { 
                 elem.webkitRequestFullscreen();
-            } else if (elem.msRequestFullscreen) { /* IE11 */
+            } else if (elem.msRequestFullscreen) {
                 elem.msRequestFullscreen();
             }
 
-            // 2. Ocultar inicio y mostrar el texto azul en silencio
             document.getElementById('pantalla-inicio').style.display = 'none';
             document.getElementById('pantalla-intro-azul').style.display = 'flex';
             
-            // 3. Esperar 6 segundos (5s de la animación azul + 1s de silencio en negro)
             setTimeout(function() {
-                // Ocultar texto azul y mostrar la galaxia
                 document.getElementById('pantalla-intro-azul').style.display = 'none';
-                document.getElementById('galaxia').style.display = 'block';
+                let galaxia = document.getElementById('galaxia');
+                galaxia.style.display = 'block';
                 
-                // Dar al play a la música épica
                 let audio = document.getElementById('musica-fondo');
                 audio.volume = 0.8;
                 audio.play();
+
+                setTimeout(function() {
+                    galaxia.style.opacity = '0';
+                    
+                    setTimeout(function() {
+                        galaxia.style.display = 'none'; 
+                        
+                        let contHalcon = document.getElementById('contenedor-halcon');
+                        let halcon = document.getElementById('halcon');
+                        contHalcon.style.display = 'block';
+                        halcon.classList.add('animar-halcon');
+
+                        // Reproducimos el efecto de sonido de la nave
+                        let audioNave = document.getElementById('sonido-nave');
+                        audioNave.volume = 1.0;
+                        audioNave.play();
+
+                    }, 1000); 
+
+                }, 83000); 
+
             }, 6000);
         }
 
-        // 4. Cuando terminan las letras amarillas de subir...
-        document.getElementById('texto-crawl').addEventListener('animationend', function() {
-            // Ocultamos las letras
-            document.getElementById('galaxia').style.display = 'none';
-            
-            // Mostramos el Halcón Milenario y le damos la clase que arranca su animación
-            let contHalcon = document.getElementById('contenedor-halcon');
-            let halcon = document.getElementById('halcon');
-            contHalcon.style.display = 'block';
-            halcon.classList.add('animar-halcon');
-        });
-
-        // 5. Cuando el Halcón Milenario termina de cruzar la pantalla...
-        document.getElementById('halcon').addEventListener('animationend', function() {
-            // Lo ocultamos
-            document.getElementById('contenedor-halcon').style.display = 'none';
-            
-            // Y mostramos la pantalla final estática
-            let pantallaFinal = document.getElementById('pantalla-final');
-            pantallaFinal.style.display = 'flex';
+        document.getElementById('halcon').addEventListener('animationend', function(e) {
+            if(e.animationName === 'vueloDerecha') {
+                document.getElementById('contenedor-halcon').style.display = 'none';
+                let pantallaFinal = document.getElementById('pantalla-final');
+                pantallaFinal.style.display = 'flex';
+            }
         });
     </script>
 </body>
