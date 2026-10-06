@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Nos Casamos! - Leire y Unai</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #000 url('https://www.transparenttextures.com/patterns/stardust.png');
+            color: #feda4a; /* Amarillo Star Wars */
+            font-family: 'Century Gothic', Arial, sans-serif;
+            overflow: hidden; /* Oculta las barras de desplazamiento */
+        }
+        
+        /* Pantalla de inicio para desbloquear el audio y pantalla completa */
+        #pantalla-inicio {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            background-color: black;
+        }
+
+        #btn-iniciar {
+            padding: 15px 40px;
+            font-size: clamp(1rem, 4vw, 1.5rem);
+            color: #000;
+            background-color: #feda4a;
+            border: 2px solid #feda4a;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        #btn-iniciar:hover {
+            background-color: #000;
+            color: #feda4a;
+        }
+
+        /* Contenedor de la animación 3D de las letras */
+        #galaxia {
+            width: 100%;
+            height: 100vh;
+            perspective: 400px;
+            display: none;
+            overflow: hidden;
+        }
+
+        #texto-crawl {
+            position: relative;
+            width: 90%;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: justify;
+            /* Clamp adapta el tamaño de letra: mínimo 1.2rem, fluido en móviles, máximo 2.2rem en PC */
+            font-size: clamp(1.2rem, 5vw, 2.2rem); 
+            line-height: 1.5em;
+            letter-spacing: 2px;
+            transform-origin: 50% 100%;
+            /* Empieza invisible desde muy abajo */
+            top: 150vh; 
+            /* Si las letras van muy lentas/rápidas, cambia los 70s */
+            animation: crawl 70s linear forwards; 
+        }
+
+        .titulo {
+            text-align: center;
+            font-size: 1.5em; /* Relativo al tamaño principal */
+            margin-bottom: 50px;
+            font-weight: bold;
+        }
+
+        @keyframes crawl {
+            0% {
+                top: 150vh; /* Aparece desde mucho más abajo */
+                transform: rotateX(25deg) translateZ(0);
+            }
+            100% {
+                top: -3500px; /* Sube hasta perderse en el infinito */
+                transform: rotateX(25deg) translateZ(-2000px);
+            }
+        }
+
+        /* Animación del Halcón Milenario */
+        #contenedor-halcon {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 50;
+            display: none;
+            overflow: hidden;
+        }
+
+        #halcon {
+            position: absolute;
+            bottom: -500px;
+            left: 50%;
+            transform: translateX(-50%) scale(0.5);
+            width: 80%;
+            max-width: 400px;
+        }
+
+        .animar-halcon {
+            /* Pasa en 3.5 segundos con aceleración para dar efecto de vuelo */
+            animation: vuelo 3.5s cubic-bezier(0.42, 0, 0.13, 1.12) forwards; 
+        }
+
+        @keyframes vuelo {
+            0% {
+                bottom: -500px;
+                transform: translateX(-50%) scale(0.6);
+            }
+            100% {
+                bottom: 120%; /* Desaparece por arriba */
+                transform: translateX(-50%) scale(1.5); /* Se hace más grande al acercarse */
+            }
+        }
+
+        /* Pantalla final estática */
+        #pantalla-final {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: transparent;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            text-align: center;
+            /* Efecto de aparición suave */
+            animation: aparecer 2s ease-in forwards; 
+        }
+
+        @keyframes aparecer {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .titulo-final {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            margin-bottom: 5px;
+            text-shadow: 2px 2px 4px #000;
+        }
+
+        .datos-boda {
+            font-size: clamp(1.2rem, 4vw, 2rem);
+            margin-bottom: 50px;
+            color: #fff;
+        }
+
+        .enlaces-finales {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .enlace-btn {
+            display: inline-block;
+            padding: 15px 30px;
+            width: 250px;
+            color: #fff;
+            border: 2px solid #feda4a;
+            background: rgba(0, 0, 0, 0.6);
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .enlace-btn:hover {
+            background: #feda4a;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Pantalla Inicial -->
+    <div id="pantalla-inicio">
+        <button id="btn-iniciar" onclick="iniciarMision()">Comenzar Transmisión</button>
+    </div>
+
+    <!-- Las Letras de Star Wars -->
+    <div id="galaxia">
+        <div id="texto-crawl">
+            <div class="titulo">EPISODIO I<br>UNA NUEVA ALIANZA</div>
+            
+            <p>Hace mucho tiempo, en una galaxia muy, muy lejana...</p>
+            
+            <p>Leire y Unai han decidido unir sus fuerzas para siempre. Tras años de aventuras compartidas, la Fuerza ha despertado y es el momento de celebrarlo por todo lo alto.</p>
+            
+            <p>El Alto Mando de la Rebelión requiere la presencia de sus aliados más leales. Habrá provisiones, brindis y bailes hasta que caiga el Imperio.</p>
+            
+            <p>Prepara tu nave, ajusta las coordenadas y mantente a la espera de las instrucciones finales...</p>
+        </div>
+    </div>
+
+    <!-- El Halcón Milenario -->
+    <div id="contenedor-halcon">
+        <!-- He puesto una imagen PNG transparente del Halcón, pero puedes descargar la tuya y enlazarla aquí -->
+        <img id="halcon" src="https://www.pngmart.com/files/3/Millennium-Falcon-PNG-Transparent-Image.png" alt="Halcón Milenario">
+    </div>
+
+    <!-- Pantalla Final (Fecha, Lugar y Links) -->
+    <div id="pantalla-final">
+        <h1 class="titulo-final">Boda Leire & Unai</h1>
+        <div class="datos-boda">
+            <p><strong>Fecha:</strong> 13/11/2027</p>
+            <p><strong>Lugar:</strong> Hotel Luze El Toro</p>
+        </div>
+        <div class="enlaces-finales">
+            <a href="TU_LINK_DE_GOOGLE_FORMS_AQUI" target="_blank" class="enlace-btn">Confirmar Asistencia</a>
+            <a href="TU_LINK_DE_SPOTIFY_AQUI" target="_blank" class="enlace-btn">Añadir Canciones</a>
+        </div>
+    </div>
+
+    <!-- Música -->
+    <audio id="musica-fondo" src="star_wars_theme.mp3"></audio>
+
+    <!-- La Magia en JavaScript -->
+    <script>
+        function iniciarMision() {
+            // 1. Poner en pantalla completa
+            let elem = document.documentElement;
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            } else if (elem.webkitRequestFullscreen) { /* Safari */
+                elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) { /* IE11 */
+                elem.msRequestFullscreen();
+            }
+
+            // 2. Ocultar inicio, mostrar galaxia y dar al play
+            document.getElementById('pantalla-inicio').style.display = 'none';
+            document.getElementById('galaxia').style.display = 'block';
+            
+            let audio = document.getElementById('musica-fondo');
+            audio.volume = 0.8;
+            audio.play();
+        }
+
+        // 3. Cuando terminan las letras de subir...
+        document.getElementById('texto-crawl').addEventListener('animationend', function() {
+            // Ocultamos las letras
+            document.getElementById('galaxia').style.display = 'none';
+            
+            // Mostramos el Halcón Milenario y le damos la clase que arranca su animación
+            let contHalcon = document.getElementById('contenedor-halcon');
+            let halcon = document.getElementById('halcon');
+            contHalcon.style.display = 'block';
+            halcon.classList.add('animar-halcon');
+        });
+
+        // 4. Cuando el Halcón Milenario termina de cruzar la pantalla...
+        document.getElementById('halcon').addEventListener('animationend', function() {
+            // Lo ocultamos
+            document.getElementById('contenedor-halcon').style.display = 'none';
+            
+            // Y mostramos la pantalla final estática
+            let pantallaFinal = document.getElementById('pantalla-final');
+            pantallaFinal.style.display = 'flex';
+        });
+    </script>
+</body>
+</html>
