@@ -43,7 +43,36 @@
             color: #feda4a;
         }
 
-        /* Contenedor de la animación 3D de las letras */
+        /* Novedad: Pantalla del texto inicial azul */
+        #pantalla-intro-azul {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: none; /* Se activa al pulsar el botón */
+            justify-content: center;
+            align-items: center;
+            background-color: black;
+            z-index: 90;
+        }
+
+        #texto-intro-azul {
+            color: #4bd5ee; /* Azul clásico de Star Wars */
+            font-size: clamp(1.2rem, 4vw, 2.5rem);
+            text-align: center;
+            padding: 20px;
+            opacity: 0;
+            /* Aparece, se mantiene y desaparece a lo largo de 5 segundos */
+            animation: aparecerDesaparecer 5s ease-in-out forwards;
+        }
+
+        @keyframes aparecerDesaparecer {
+            0% { opacity: 0; }
+            20% { opacity: 1; }
+            80% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        /* Contenedor de la animación 3D de las letras amarillas */
         #galaxia {
             width: 100%;
             height: 100vh;
@@ -58,31 +87,28 @@
             max-width: 800px;
             margin: 0 auto;
             text-align: justify;
-            /* Clamp adapta el tamaño de letra: mínimo 1.2rem, fluido en móviles, máximo 2.2rem en PC */
             font-size: clamp(1.2rem, 5vw, 2.2rem); 
             line-height: 1.5em;
             letter-spacing: 2px;
             transform-origin: 50% 100%;
-            /* Empieza invisible desde muy abajo */
             top: 150vh; 
-            /* Si las letras van muy lentas/rápidas, cambia los 70s */
             animation: crawl 70s linear forwards; 
         }
 
         .titulo {
             text-align: center;
-            font-size: 1.5em; /* Relativo al tamaño principal */
+            font-size: 1.5em;
             margin-bottom: 50px;
             font-weight: bold;
         }
 
         @keyframes crawl {
             0% {
-                top: 150vh; /* Aparece desde mucho más abajo */
+                top: 150vh;
                 transform: rotateX(25deg) translateZ(0);
             }
             100% {
-                top: -3500px; /* Sube hasta perderse en el infinito */
+                top: -3500px;
                 transform: rotateX(25deg) translateZ(-2000px);
             }
         }
@@ -110,7 +136,6 @@
         }
 
         .animar-halcon {
-            /* Pasa en 3.5 segundos con aceleración para dar efecto de vuelo */
             animation: vuelo 3.5s cubic-bezier(0.42, 0, 0.13, 1.12) forwards; 
         }
 
@@ -120,8 +145,8 @@
                 transform: translateX(-50%) scale(0.6);
             }
             100% {
-                bottom: 120%; /* Desaparece por arriba */
-                transform: translateX(-50%) scale(1.5); /* Se hace más grande al acercarse */
+                bottom: 120%;
+                transform: translateX(-50%) scale(1.5);
             }
         }
 
@@ -136,7 +161,6 @@
             align-items: center;
             z-index: 100;
             text-align: center;
-            /* Efecto de aparición suave */
             animation: aparecer 2s ease-in forwards; 
         }
 
@@ -191,12 +215,15 @@
         <button id="btn-iniciar" onclick="iniciarMision()">Comenzar Transmisión</button>
     </div>
 
-    <!-- Las Letras de Star Wars -->
+    <!-- Pantalla del texto azul silencioso -->
+    <div id="pantalla-intro-azul">
+        <p id="texto-intro-azul">Hace mucho tiempo, en una galaxia muy, muy lejana...</p>
+    </div>
+
+    <!-- Las Letras de Star Wars Amarillas -->
     <div id="galaxia">
         <div id="texto-crawl">
             <div class="titulo">EPISODIO I<br>UNA NUEVA ALIANZA</div>
-            
-            <p>Hace mucho tiempo, en una galaxia muy, muy lejana...</p>
             
             <p>Leire y Unai han decidido unir sus fuerzas para siempre. Tras años de aventuras compartidas, la Fuerza ha despertado y es el momento de celebrarlo por todo lo alto.</p>
             
@@ -208,7 +235,6 @@
 
     <!-- El Halcón Milenario -->
     <div id="contenedor-halcon">
-        <!-- He puesto una imagen PNG transparente del Halcón, pero puedes descargar la tuya y enlazarla aquí -->
         <img id="halcon" src="https://www.pngmart.com/files/3/Millennium-Falcon-PNG-Transparent-Image.png" alt="Halcón Milenario">
     </div>
 
@@ -241,16 +267,24 @@
                 elem.msRequestFullscreen();
             }
 
-            // 2. Ocultar inicio, mostrar galaxia y dar al play
+            // 2. Ocultar inicio y mostrar el texto azul en silencio
             document.getElementById('pantalla-inicio').style.display = 'none';
-            document.getElementById('galaxia').style.display = 'block';
+            document.getElementById('pantalla-intro-azul').style.display = 'flex';
             
-            let audio = document.getElementById('musica-fondo');
-            audio.volume = 0.8;
-            audio.play();
+            // 3. Esperar 6 segundos (5s de la animación azul + 1s de silencio en negro)
+            setTimeout(function() {
+                // Ocultar texto azul y mostrar la galaxia
+                document.getElementById('pantalla-intro-azul').style.display = 'none';
+                document.getElementById('galaxia').style.display = 'block';
+                
+                // Dar al play a la música épica
+                let audio = document.getElementById('musica-fondo');
+                audio.volume = 0.8;
+                audio.play();
+            }, 6000);
         }
 
-        // 3. Cuando terminan las letras de subir...
+        // 4. Cuando terminan las letras amarillas de subir...
         document.getElementById('texto-crawl').addEventListener('animationend', function() {
             // Ocultamos las letras
             document.getElementById('galaxia').style.display = 'none';
@@ -262,7 +296,7 @@
             halcon.classList.add('animar-halcon');
         });
 
-        // 4. Cuando el Halcón Milenario termina de cruzar la pantalla...
+        // 5. Cuando el Halcón Milenario termina de cruzar la pantalla...
         document.getElementById('halcon').addEventListener('animationend', function() {
             // Lo ocultamos
             document.getElementById('contenedor-halcon').style.display = 'none';
